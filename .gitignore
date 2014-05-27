@@ -46,6 +46,7 @@ hs_err_pid*
 .cproject
 .project
 .settings/
+Release/
 
 Builds/
 *.bak
