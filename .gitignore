@@ -43,5 +43,9 @@ hs_err_pid*
 **/*.xcodeproj/
 *.xcscheme
 *.xcuserstate
+.cproject
+.project
+.settings/
+
 Builds/
 *.bak
