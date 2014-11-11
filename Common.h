@@ -13,7 +13,7 @@
 #include "Wire.h"
 
 
-#include "Adafruit_L3GD20.h"
+// #include "Adafruit_L3GD20.h"
 
 
 #endif /* COMMON_H_ */
