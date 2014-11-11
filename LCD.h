@@ -8,7 +8,7 @@
 #ifndef LCD_H_
 #define LCD_H_
 #include "Common.h"
-#include "LiquidCrystal.h"
+#include <LiquidCrystal.h>
 class LCD {
 public:
 	LCD();

@@ -8,10 +8,10 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
-#include "Arduino.h"
-#include "SoftwareSerial.h"
-#include "Wire.h"
-
+#include <Arduino.h>
+#include <WString.h>
+#include <SoftwareSerial.h>
+#include <Wire.h>
 
 // #include "Adafruit_L3GD20.h"
 

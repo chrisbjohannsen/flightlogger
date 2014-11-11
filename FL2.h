@@ -17,6 +17,7 @@ extern "C" {
 #endif
 void loop();
 void setup();
+void healthCheck();
 #ifdef __cplusplus
 } // extern "C"
 #endif

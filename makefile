@@ -4,9 +4,9 @@
 ##########    Check these every time you start a new project    ##########
 ##########------------------------------------------------------##########
 
-MCU   = atmega2560
+MCU = atmega2560
 F_CPU = 1000000
-BAUD = 384000
+BAUD = 19200
 ## Also try BAUD = 19200 or 38400 if you're feeling lucky.
 
 ## This is where your main() routine lives 
@@ -14,11 +14,24 @@ MAIN = FL2.cpp
 
 ## If you've split your program into multiple .c / .h files, 
 ## include the additional source (in same directory) here 
-LOCAL_SOURCE = Altimeter.cpp GPS.cpp Common.cpp Utils.cpp
+LOCAL_SOURCE = Altimeter.cpp Common.h Utils.h ConsoleLogger.cpp ConsoleSerialPort.cpp LCD.cpp Logger.cpp PanelLogger.cpp SerialPort.cpp
+# LOCAL_SOURCE += GPS.cpp
+# LOCAL_SOURCE += GpsSerialPort.cpp
+# LOCAL_SOURCE += Gyro.cpp
+
+## Where do the arduino files live
+ARDUINO_LIBS_ROOT = /Users/chris/development/arduino/Arduino
 
 ## Here you can link to one more directory (and multiple .c files)
-EXTRA_SOURCE_DIR = ../../Arduino/libraries/Wire/ ../../Arduino/hardware/arduino ../lib/Adafruit_BMP085/ ../lib/Adafruit_GPS/
-EXTRA_SOURCE_FILES = Adafruit_BMP085_U.cpp Adafruit_GPS.cpp
+EXTRA_SOURCE_DIR = -I$(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/ 
+EXTRA_SOURCE_DIR += -I$(ARDUINO_LIBS_ROOT)/hardware/arduino/variants/mega/
+EXTRA_SOURCE_DIR += -I$(ARDUINO_LIBS_ROOT)/libraries/SoftwareSerial/ 
+EXTRA_SOURCE_DIR += -I$(ARDUINO_LIBS_ROOT)/libraries/Wire/ 
+EXTRA_SOURCE_DIR += -I$(ARDUINO_LIBS_ROOT)/libraries/LiquidCrystal/ 
+EXTRA_SOURCE_DIR += -Ilib/Adafruit_BMP085/ 
+# EXTRA_SOURCE_DIR += -Ilib/Adafruit_GPS/
+
+##EXTRA_SOURCE_FILES = $(ARDUINO_LIBS_ROOT)/hardware/arduino/variants/mega/pins_arduino.h
 
 ##########------------------------------------------------------##########
 ##########                 Programmer Defaults                  ##########
@@ -40,34 +53,34 @@ PROGRAMMER_ARGS = 	“-b 38400 -P /dev/tty.usbmodemXXXXXXX”
 ##########------------------------------------------------------##########
 
 ## Defined programs / locations
-CC = avr-gcc
+CC = avr-g++
 OBJCOPY = avr-objcopy
 OBJDUMP = avr-objdump
 AVRSIZE = avr-size
 AVRDUDE = avrdude
 
-## Compilation options, type man avr-gcc if you're curious.
-CFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU)UL -DBAUD=$(BAUD) -Os -I. -I$(EXTRA_SOURCE_DIR)
+## Compilation options, type if you're curious.
+CFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU)UL -DBAUD=$(BAUD) -Os -I. $(EXTRA_SOURCE_DIR)
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
-CFLAGS += -Wall -Wstrict-prototypes
+CFLAGS += -Wall 
 CFLAGS += -g -ggdb
 CFLAGS += -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,--relax
-CFLAGS += -std=gnu99
+## CFLAGS += -std=gnu99
 ## CFLAGS += -Wl,-u,vfprintf -lprintf_flt -lm  ## for floating-point printf
 ## CFLAGS += -Wl,-u,vfprintf -lprintf_min      ## for smaller printf
 
 ## Lump target and extra source files together
 TARGET = $(strip $(basename $(MAIN)))
-SRC = $(TARGET).c
+SRC = $(TARGET).cpp
 EXTRA_SOURCE = $(addprefix $(EXTRA_SOURCE_DIR), $(EXTRA_SOURCE_FILES))
 SRC += $(EXTRA_SOURCE) 
 SRC += $(LOCAL_SOURCE) 
 
 ## List of all header files
-HEADERS = $(SRC:.c=.h) 
+HEADERS = $(SRC:.cpp=.h) 
 
 ## For every .c file, compile an .o object file
-OBJ = $(SRC:.c=.o) 
+OBJ = $(SRC:.cpp=.o) 
 
 ## Generic Makefile targets.  (Only .hex file is necessary)
 all: $(TARGET).hex
@@ -76,7 +89,7 @@ all: $(TARGET).hex
 	$(OBJCOPY) -R .eeprom -O ihex $< $@
 
 %.elf: $(SRC)
-	$(CC) $(CFLAGS) $(SRC) --output $@ 
+	 $(CC) $(CFLAGS) $(SRC) --output $@
 
 %.eeprom: %.elf
 	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O ihex $< $@ 
@@ -86,6 +99,7 @@ debug:
 	@echo "Source files:"   $(SRC)
 	@echo "MCU, F_CPU, BAUD:"  $(MCU), $(F_CPU), $(BAUD)
 	@echo	
+	@echo $(CC) $(CFLAGS) $(SRC)
 
 # Optionally create listing file from .elf
 # This creates approximate assembly-language equivalent of your code.

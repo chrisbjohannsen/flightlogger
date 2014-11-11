@@ -51,3 +51,6 @@ Release/
 FlightLogger/
 Builds/
 *.bak
+
+#gcc stuff
+*.gch
