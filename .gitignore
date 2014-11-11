@@ -47,6 +47,6 @@ hs_err_pid*
 .project
 .settings/
 Release/
-FlightLogger/**
+FlightLogger/
 Builds/
 *.bak
