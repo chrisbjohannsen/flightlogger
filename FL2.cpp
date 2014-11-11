@@ -7,10 +7,18 @@
 #include "ConsoleLogger.h"
 #include "PanelLogger.h"
 //GPS _gps;
-Altimeter _altimeter;
-ConsoleLogger _console;
-PanelLogger _panel;
+// Altimeter _altimeter;
+// ConsoleLogger _console;
+// PanelLogger _panel;
 
+
+int main(void) {
+	setup();
+
+	for(;;){
+		loop();
+	}
+}
 //The setup function is called once at startup of the sketch
 void setup() {
 //	_gps.initialize();
@@ -18,11 +26,11 @@ void setup() {
 
 	healthCheck();
 	
-	_altimeter.initialize();
-	_panel.initialize();
+	// _altimeter.initialize();
+	// _panel.initialize();
 	delay(1000);
 	pinMode(13, OUTPUT);
-	_console.initialize();
+	// _console.initialize();
 	delay(2000);
 }
 
@@ -37,9 +45,9 @@ void loop() {
 //		delay(3000);
 //		printLocation();
 //		delay(3000);
-	String tempC = floatToText(_altimeter.getTempC(), 5, 2);
-	_console.log(tempC);
-	_panel.log("Temp C", tempC);
+	// String tempC = floatToText(_altimeter.getTempC(), 5, 2);
+	// _console.log(tempC);
+	// _panel.log("Temp C", tempC);
 	delay(500);
 }
 

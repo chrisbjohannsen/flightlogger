@@ -15,9 +15,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-void loop();
-void setup();
-void healthCheck();
+	int main(void);
+	void loop();
+	void setup();
+	void healthCheck();
 #ifdef __cplusplus
 } // extern "C"
 #endif

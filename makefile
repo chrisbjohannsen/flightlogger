@@ -14,7 +14,7 @@ MAIN = FL2.cpp
 
 ## If you've split your program into multiple .c / .h files, 
 ## include the additional source (in same directory) here 
-LOCAL_SOURCE = Altimeter.cpp Common.h Utils.h ConsoleLogger.cpp ConsoleSerialPort.cpp LCD.cpp Logger.cpp PanelLogger.cpp SerialPort.cpp
+LOCAL_SOURCE = Altimeter.cpp ConsoleLogger.cpp ConsoleSerialPort.cpp LCD.cpp Logger.cpp PanelLogger.cpp SerialPort.cpp
 # LOCAL_SOURCE += GPS.cpp
 # LOCAL_SOURCE += GpsSerialPort.cpp
 # LOCAL_SOURCE += Gyro.cpp
@@ -31,7 +31,9 @@ EXTRA_SOURCE_DIR += -I$(ARDUINO_LIBS_ROOT)/libraries/LiquidCrystal/
 EXTRA_SOURCE_DIR += -Ilib/Adafruit_BMP085/ 
 # EXTRA_SOURCE_DIR += -Ilib/Adafruit_GPS/
 
-##EXTRA_SOURCE_FILES = $(ARDUINO_LIBS_ROOT)/hardware/arduino/variants/mega/pins_arduino.h
+EXTRA_SOURCE_FILES = $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/wiring.c
+EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/wiring_analog.c
+EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/wiring_digital.c
 
 ##########------------------------------------------------------##########
 ##########                 Programmer Defaults                  ##########
@@ -125,7 +127,7 @@ clean:
 	$(TARGET).eeprom
 
 squeaky_clean:
-	rm -f *.elf *.hex *.obj *.o *.d *.eep *.lst *.lss *.sym *.map *~
+	rm -f *.elf *.hex *.obj *.o *.out *.d *.eep *.lst *.lss *.sym *.map *~
 
 ##########------------------------------------------------------##########
 ##########              Programmer-specific details             ##########
