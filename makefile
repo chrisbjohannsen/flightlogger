@@ -5,8 +5,8 @@
 ##########------------------------------------------------------##########
 
 MCU = atmega2560
-F_CPU = 1000000
-BAUD = 9600
+F_CPU = 8000000
+BAUD = 115200
 ## Also try BAUD = 19200 or 38400 if you're feeling lucky.
 
 ## This is where your main() routine lives 
@@ -41,9 +41,9 @@ EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/wiring
 ##########        (Can override.  See bottom of file.)          ##########
 ##########------------------------------------------------------##########
 
-PROGRAMMER_TYPE = arduino
+PROGRAMMER_TYPE = wiring
 # extra arguments to avrdude: baud rate, chip type, -F flag, etc.
-PROGRAMMER_ARGS = -v -v -v -v -b$(BAUD) -P/dev/tty.usbmodem1441
+PROGRAMMER_ARGS = -v -v -v -v -v -b$(BAUD) -P/dev/tty.usbmodem1441
 
 ##########------------------------------------------------------##########
 ##########                   Makefile Magic!                    ##########
