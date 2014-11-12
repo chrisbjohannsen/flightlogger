@@ -6,7 +6,7 @@
 
 MCU = atmega2560
 F_CPU = 1000000
-BAUD = 19200
+BAUD = 9600
 ## Also try BAUD = 19200 or 38400 if you're feeling lucky.
 
 ## This is where your main() routine lives 
@@ -41,9 +41,9 @@ EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/wiring
 ##########        (Can override.  See bottom of file.)          ##########
 ##########------------------------------------------------------##########
 
-PROGRAMMER_TYPE = avrisp
+PROGRAMMER_TYPE = arduino
 # extra arguments to avrdude: baud rate, chip type, -F flag, etc.
-PROGRAMMER_ARGS = 	“-b 38400 -P /dev/tty.usbmodemXXXXXXX”
+PROGRAMMER_ARGS = -v -v -v -v -b$(BAUD) -P/dev/tty.usbmodem1441
 
 ##########------------------------------------------------------##########
 ##########                   Makefile Magic!                    ##########
@@ -85,15 +85,15 @@ HEADERS = $(SRC:.cpp=.h)
 OBJ = $(SRC:.cpp=.o) 
 
 ## Generic Makefile targets.  (Only .hex file is necessary)
-all: $(TARGET).hex
+all: FL2.hex
 
-%.hex: %.elf
+FL2.hex: FL2.elf
 	$(OBJCOPY) -R .eeprom -O ihex $< $@
 
-%.elf: $(SRC)
-	 $(CC) $(CFLAGS) $(SRC) --output $@
+FL2.elf: 
+	$(CC) $(CFLAGS) $(SRC) --output $@
 
-%.eeprom: %.elf
+FL2.eeprom: FL2.elf
 	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O ihex $< $@ 
 
 debug:
@@ -107,18 +107,18 @@ debug:
 # This creates approximate assembly-language equivalent of your code.
 # Useful for debugging time-sensitive bits, 
 # or making sure the compiler does what you want.
-disassemble: $(TARGET).lst
+disassemble: FL2.lst
 
 disasm: disassemble
 
-eeprom: $(TARGET).eeprom
+eeprom: FL2.eeprom
 
-%.lst: %.elf
+FL2.lst: FL2.elf
 	$(OBJDUMP) -S $< > $@
 
 # Optionally show how big the resulting program is 
-size:  $(TARGET).elf
-	$(AVRSIZE) -C --mcu=$(MCU) $(TARGET).elf
+size:  FL2.elf
+	$(AVRSIZE) -C --mcu=$(MCU) FL2.elf
 
 clean:
 	rm -f $(TARGET).elf $(TARGET).hex $(TARGET).obj \
@@ -135,16 +135,16 @@ squeaky_clean:
 ##########------------------------------------------------------##########
 
 flash: $(TARGET).hex 
-	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<
+	$(AVRDUDE) -c$(PROGRAMMER_TYPE) -p$(MCU) $(PROGRAMMER_ARGS) -Uflash:w:$<
 
 ## An alias
 program: flash
 
 flash_eeprom: $(TARGET).eeprom
-	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U eeprom:w:$<
+	$(AVRDUDE) -c$(PROGRAMMER_TYPE) -p$(MCU) $(PROGRAMMER_ARGS) -Ueeprom:w:$<
 
 avrdude_terminal:
-	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -nt
+	$(AVRDUDE) -c$(PROGRAMMER_TYPE) -p$(MCU) $(PROGRAMMER_ARGS) -nt
 
 ## If you've got multiple programmers that you use, 
 ## you can define them here so that it's easy to switch.

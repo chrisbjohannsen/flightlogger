@@ -54,3 +54,5 @@ Builds/
 
 #gcc stuff
 *.gch
+*.elf
+*.hex
