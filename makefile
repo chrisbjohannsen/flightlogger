@@ -120,10 +120,14 @@ $(OBJDIR)/%.o: %.c %.cpp
 
 debug:
 	@echo
-	@echo "Source files:"   $(SRC)
-	@echo "MCU, F_CPU, BAUD:"  $(MCU), $(F_CPU), $(BAUD)
+	@echo "Source files: \n\t"   $(SRC)
+	@echo "MCU, F_CPU, BAUD: \n\t"  $(MCU), $(F_CPU), $(BAUD)
 	@echo	
-	@echo $(CC) $(CFLAGS) $(SRC)
+	@echo "Build command: \n\t" $(CC) $(CFLAGS) $(SRC)
+	@echo 
+	@echo "Third party objects: \n\t" $(OBJECTS)
+	@echo 
+	@echo "Third party sources: \n\t" $(EXTRA_SOURCE)
 
 # Optionally create listing file from .elf
 # This creates approximate assembly-language equivalent of your code.
