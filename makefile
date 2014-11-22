@@ -17,6 +17,7 @@ OBJDIR = ./objs
 
 ## If you've split your program into multiple .c / .h files, 
 ## include the additional source (in same directory) here 
+LOCAL_INCLUDE_DIR = ./
 LOCAL_SOURCE = Altimeter.cpp ConsoleLogger.cpp ConsoleSerialPort.cpp LCD.cpp Logger.cpp PanelLogger.cpp SerialPort.cpp
 LOCAL_OBJECTS = Altimeter.o ConsoleLogger.o ConsoleSerialPort.o LCD.o Logger.o PanelLogger.o SerialPort.o
 # LOCAL_SOURCE += GPS.cpp
@@ -93,10 +94,8 @@ CFLAGS += -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,--relax
 TARGET = $(strip $(basename $(MAIN)))
 SRC = $(TARGET).cpp
 SRC += $(LOCAL_SOURCE) 
-# EXTRA_SOURCE = $(EXTRA_SOURCE_DIR) 
 EXTRA_SOURCE = $(EXTRA_SOURCE_FILES)
 EXTRA_SOURCE += $(ARDUINO_CORE_LIBS)
-# SRC += $(EXTRA_SOURCE)
 
 ## List of all header files
 HEADERS = $(SRC:.cpp=.h) 
@@ -114,14 +113,14 @@ FL2.hex: FL2.elf
 	@echo "FL2.hex: building FL2.hex:" 
 	$(OBJCOPY) -R .eeprom -O ihex $< $@
 
-FL2.elf: $(OBJECTS) $(LOCAL_OBJECTS) 
+FL2.elf: $(OBJ) | $(OBJECTS) 
 	@echo
 	@echo "FL2.elf: building FL2.elf:" 
 
-LOCAL_OBJECTS: $(SRC)
+$(OBJ): $(SRC)
 	@echo
-	@echo "LOCAL_OBJECTS: building FL2.elf:" 
-	$(CC) $(CFLAGS) $(EXTRA_SOURCE_DIR) -c $< 
+	@echo "LOCAL_OBJECTS: building local objects:" 
+	$(CC) $(CFLAGS) $(EXTRA_SOURCE_DIR) $(LOCAL_INCLUDE_DIR) -c $< --output $@ 
 
 FL2.eeprom: FL2.elf
 	@echo
@@ -139,9 +138,6 @@ $(OBJDIR):
 	@echo "creating 3rd party object directory:" 
 	mkdir -p $(OBJDIR)
 
-#$(OBJDIR)/%.o: $(ARDUINO_CORE_LIBS)
-#	@echo
-	
 debug:
 	@echo
 	@echo "Source files: \n\t"   $(SRC)

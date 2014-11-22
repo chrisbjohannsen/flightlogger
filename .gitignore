@@ -63,3 +63,5 @@ Builds/
 
 # project-specific
 makefile.local
+*.o
+objs/*
