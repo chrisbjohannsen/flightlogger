@@ -1,3 +1,0 @@
-## Where do the arduino files live
-# ARDUINO_LIBS_ROOT = /Users/chris/development/arduino/Arduino
-ARDUINO_LIBS_ROOT = /usr/share/arduino
