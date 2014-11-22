@@ -123,8 +123,10 @@ FL2.eeprom: FL2.elf
 	@echo "FL2.eeprom: building FL2.eeprom:" 
 	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O ihex $< $@ 
 
-$(OBJECTS): | $(OBJDIR) $(OBJDIR)/%.o
+$(OBJECTS): $(ARDUINO_CORE_LIBS) | $(OBJDIR)
 	@echo
+	@echo "Building 3rd part objects:" 
+	$(CC) $(CFLAGS) $(EXTRA_SOURCE_DIR) $(ARDUINO_CORE_LIBS) -c $< --output $(OBJDIR)
 	@echo "3rd party object compilation complete.\n" 
 	
 $(OBJDIR):
@@ -132,10 +134,8 @@ $(OBJDIR):
 	@echo "creating 3rd party object directory:" 
 	mkdir -p $(OBJDIR)
 
-$(OBJDIR)/%.o: $(EXTRA_SOURCE_FILES)
-	@echo
-	@echo "Building 3rd part objects:" 
-	$(CC) $(CFLAGS) $(EXTRA_SOURCE_DIR) $(EXTRA_SOURCE) -c --output $@ $<
+#$(OBJDIR)/%.o: $(ARDUINO_CORE_LIBS)
+#	@echo
 	
 debug:
 	@echo
