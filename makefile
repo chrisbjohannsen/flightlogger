@@ -18,6 +18,7 @@ OBJDIR = ./objs
 ## If you've split your program into multiple .c / .h files, 
 ## include the additional source (in same directory) here 
 LOCAL_SOURCE = Altimeter.cpp ConsoleLogger.cpp ConsoleSerialPort.cpp LCD.cpp Logger.cpp PanelLogger.cpp SerialPort.cpp
+LOCAL_OBJECTS = Altimeter.o ConsoleLogger.o ConsoleSerialPort.o LCD.o Logger.o PanelLogger.o SerialPort.o
 # LOCAL_SOURCE += GPS.cpp
 # LOCAL_SOURCE += GpsSerialPort.cpp
 # LOCAL_SOURCE += Gyro.cpp
@@ -113,10 +114,14 @@ FL2.hex: FL2.elf
 	@echo "FL2.hex: building FL2.hex:" 
 	$(OBJCOPY) -R .eeprom -O ihex $< $@
 
-FL2.elf: $(OBJECTS)
+FL2.elf: $(OBJECTS) $(LOCAL_OBJECTS) 
 	@echo
 	@echo "FL2.elf: building FL2.elf:" 
-	$(CC) $(CFLAGS) $(SRC) --output $@
+
+LOCAL_OBJECTS: $(SRC)
+	@echo
+	@echo "LOCAL_OBJECTS: building FL2.elf:" 
+	$(CC) $(CFLAGS) $(EXTRA_SOURCE_DIR) -c $< 
 
 FL2.eeprom: FL2.elf
 	@echo
@@ -126,7 +131,7 @@ FL2.eeprom: FL2.elf
 $(OBJECTS): $(ARDUINO_CORE_LIBS) | $(OBJDIR)
 	@echo
 	@echo "Building 3rd part objects:" 
-	$(CC) $(CFLAGS) $(EXTRA_SOURCE_DIR) $(ARDUINO_CORE_LIBS) -c $< --output $(OBJDIR)
+	$(CC) $(CFLAGS) $(EXTRA_SOURCE_DIR) -c $< --output $@
 	@echo "3rd party object compilation complete.\n" 
 	
 $(OBJDIR):
