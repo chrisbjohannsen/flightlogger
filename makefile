@@ -4,6 +4,8 @@
 ##########    Check these every time you start a new project    ##########
 ##########------------------------------------------------------##########
 
+include makefile.local
+
 MCU = atmega2560
 F_CPU = 8000000
 BAUD = 115200
@@ -20,8 +22,9 @@ LOCAL_SOURCE = Altimeter.cpp ConsoleLogger.cpp ConsoleSerialPort.cpp LCD.cpp Log
 # LOCAL_SOURCE += GpsSerialPort.cpp
 # LOCAL_SOURCE += Gyro.cpp
 
+# This should now be defined in makefile.local
 ## Where do the arduino files live
-ARDUINO_LIBS_ROOT = /Users/chris/development/arduino/Arduino
+# ARDUINO_LIBS_ROOT = /Users/chris/development/arduino/Arduino
 
 ## Here you can link to one more directory (and multiple .c files)
 EXTRA_SOURCE_DIR = -I$(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/ 
