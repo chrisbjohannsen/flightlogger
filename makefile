@@ -35,21 +35,23 @@ EXTRA_SOURCE_DIR += -I$(ARDUINO_LIBS_ROOT)/libraries/LiquidCrystal/
 EXTRA_SOURCE_DIR += -Ilib/Adafruit_BMP085/ 
 # EXTRA_SOURCE_DIR += -Ilib/Adafruit_GPS/
 
-EXTRA_SOURCE_FILES = $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/wiring.c
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/wiring_analog.c
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/wiring_digital.c
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/wiring_pulse.c
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/wiring_shift.c
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/WString.cpp
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/WMath.cpp
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/Stream.cpp
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/HardwareSerial.cpp
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/Print.cpp
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/Tone.cpp
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/IPAddress.cpp
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/USBCore.cpp
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/WInterrupts.c
-EXTRA_SOURCE_FILES += $(ARDUINO_LIBS_ROOT)/hardware/arduino/cores/arduino/new.cpp
+EXTRA_SOURCE_FILES = /hardware/arduino/cores/arduino/wiring.c
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/wiring_analog.c
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/wiring_digital.c
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/wiring_pulse.c
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/wiring_shift.c
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/WString.cpp
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/WMath.cpp
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/Stream.cpp
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/HardwareSerial.cpp
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/Print.cpp
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/Tone.cpp
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/IPAddress.cpp
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/USBCore.cpp
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/WInterrupts.c
+EXTRA_SOURCE_FILES += /hardware/arduino/cores/arduino/new.cpp
+ARDUINO_CORE_LIBS = $(addprefix $(ARDUINO_LIBS_ROOT)/, $(EXTRA_SOURCE_FILES))
+
 ##########------------------------------------------------------##########
 ##########                 Programmer Defaults                  ##########
 ##########          Set up once, then forget about it           ##########
@@ -91,7 +93,7 @@ TARGET = $(strip $(basename $(MAIN)))
 SRC = $(TARGET).cpp
 SRC += $(LOCAL_SOURCE) 
 EXTRA_SOURCE =  $(EXTRA_SOURCE_DIR) 
-EXTRA_SOURCE += $(EXTRA_SOURCE_FILES)
+EXTRA_SOURCE += $(ARDUINO_CORE_LIBS)
 
 ## List of all header files
 HEADERS = $(SRC:.cpp=.h) 
