@@ -56,3 +56,7 @@ Builds/
 *.gch
 *.elf
 *.hex
+
+# vim stuff
+*.swp
+.*.swp
