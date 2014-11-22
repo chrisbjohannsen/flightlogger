@@ -86,15 +86,15 @@ CFLAGS += -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,--relax
 ## Lump target and extra source files together
 TARGET = $(strip $(basename $(MAIN)))
 SRC = $(TARGET).cpp
-EXTRA_SOURCE = $(addprefix $(EXTRA_SOURCE_DIR), $(EXTRA_SOURCE_FILES))
-# SRC += $(EXTRA_SOURCE)
 SRC += $(LOCAL_SOURCE) 
+EXTRA_SOURCE =  $(EXTRA_SOURCE_DIR) 
+EXTRA_SOURCE += $(EXTRA_SOURCE_FILES)
 
 ## List of all header files
 HEADERS = $(SRC:.cpp=.h) 
 
 ## For every .c file, compile an .o object file
-OBJ = $(SRC:.c=.o) 
+OBJ = $(SRC:.cpp=.o) 
 
 OBJECTS = $(addprefix $(OBJDIR)/, wiring.o wiring_analog.o wiring_digital.o wiring_pulse.o wiring_shift.o WString.o WMath.o Stream.o HardwareSerial.o Print.o Tone.o IPAddress.o USBCore.o WInterrupts.o new.o Adafruit_BMP085.o Adafruit_GPS.o Adafruit_L3GD20.o)
 
@@ -121,7 +121,8 @@ $(OBJDIR)/%.o: %.c %.cpp
 debug:
 	@echo
 	@echo "Source files: \n\t"   $(SRC)
-	@echo "MCU, F_CPU, BAUD: \n\t"  $(MCU), $(F_CPU), $(BAUD)
+	@echo
+	@echo "MCU, F_CPU, BAUD: "  $(MCU), $(F_CPU), $(BAUD)
 	@echo	
 	@echo "Build command: \n\t" $(CC) $(CFLAGS) $(SRC)
 	@echo 
