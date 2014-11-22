@@ -11,6 +11,7 @@ BAUD = 115200
 
 ## This is where your main() routine lives 
 MAIN = FL2.cpp
+OBJDIR = ./objs
 
 ## If you've split your program into multiple .c / .h files, 
 ## include the additional source (in same directory) here 
@@ -86,14 +87,16 @@ CFLAGS += -ffunction-sections -fdata-sections -Wl,--gc-sections -Wl,--relax
 TARGET = $(strip $(basename $(MAIN)))
 SRC = $(TARGET).cpp
 EXTRA_SOURCE = $(addprefix $(EXTRA_SOURCE_DIR), $(EXTRA_SOURCE_FILES))
-SRC += $(EXTRA_SOURCE) 
+# SRC += $(EXTRA_SOURCE)
 SRC += $(LOCAL_SOURCE) 
 
 ## List of all header files
 HEADERS = $(SRC:.cpp=.h) 
 
 ## For every .c file, compile an .o object file
-OBJ = $(SRC:.cpp=.o) 
+OBJ = $(SRC:.c=.o) 
+
+OBJECTS = $(addprefix $(OBJDIR)/, wiring.o wiring_analog.o wiring_digital.o wiring_pulse.o wiring_shift.o WString.o WMath.o Stream.o HardwareSerial.o Print.o Tone.o IPAddress.o USBCore.o WInterrupts.o new.o Adafruit_BMP085.o Adafruit_GPS.o Adafruit_L3GD20.o)
 
 ## Generic Makefile targets.  (Only .hex file is necessary)
 all: FL2.hex
@@ -101,11 +104,19 @@ all: FL2.hex
 FL2.hex: FL2.elf
 	$(OBJCOPY) -R .eeprom -O ihex $< $@
 
-FL2.elf: 
+FL2.elf: $(OBJECTS)
 	$(CC) $(CFLAGS) $(SRC) --output $@
 
 FL2.eeprom: FL2.elf
 	$(OBJCOPY) -j .eeprom --change-section-lma .eeprom=0 -O ihex $< $@ 
+
+$(OBJECTS): | $(OBJDIR)
+	
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+	
+$(OBJDIR)/%.o: %.c %.cpp
+	$(CC) $(CFLAGS) $(EXTRA_SOURCE) -c --output $@ $<
 
 debug:
 	@echo
@@ -132,12 +143,12 @@ size:  FL2.elf
 	$(AVRSIZE) -C --mcu=$(MCU) FL2.elf
 
 clean:
-	rm -f $(TARGET).elf $(TARGET).hex $(TARGET).obj \
+	rm -rf $(TARGET).elf $(TARGET).hex $(TARGET).obj \
 	$(TARGET).o $(TARGET).d $(TARGET).eep $(TARGET).lst \
 	$(TARGET).lss $(TARGET).sym $(TARGET).map $(TARGET)~ \
-	$(TARGET).eeprom
+	$(TARGET).eeprom $(OBJDIR)
 
-squeaky_clean:
+squeaky_clean: clean
 	rm -f *.elf *.hex *.obj *.o *.out *.d *.eep *.lst *.lss *.sym *.map *~
 
 ##########------------------------------------------------------##########
