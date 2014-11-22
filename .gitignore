@@ -60,3 +60,6 @@ Builds/
 # vim stuff
 *.swp
 .*.swp
+
+# project-specific
+makefile.local
