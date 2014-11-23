@@ -18,8 +18,8 @@ OBJDIR = ./objs
 ## If you've split your program into multiple .c / .h files, 
 ## include the additional source (in same directory) here 
 LOCAL_INCLUDE_DIR = ./
-LOCAL_SOURCE = Altimeter.cpp ConsoleLogger.cpp ConsoleSerialPort.cpp LCD.cpp Logger.cpp PanelLogger.cpp SerialPort.cpp
-LOCAL_OBJECTS = Altimeter.o ConsoleLogger.o ConsoleSerialPort.o LCD.o Logger.o PanelLogger.o SerialPort.o
+LOCAL_SOURCE = Altimeter.cpp ConsoleLogger.cpp ConsoleSerialPort.cpp LCD.cpp Logger.cpp PanelLogger.cpp SerialPort.cpp Utils.cpp
+LOCAL_OBJECTS = Altimeter.o ConsoleLogger.o ConsoleSerialPort.o LCD.o Logger.o PanelLogger.o SerialPort.o Utils.o
 # LOCAL_SOURCE += GPS.cpp
 # LOCAL_SOURCE += GpsSerialPort.cpp
 # LOCAL_SOURCE += Gyro.cpp
@@ -81,7 +81,8 @@ AVRSIZE = avr-size
 AVRDUDE = avrdude
 
 ## Compilation options, type if you're curious.
-CFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU)UL -DBAUD=$(BAUD) -Os -I. $(EXTRA_SOURCE_DIR)
+CFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU)UL -DBAUD=$(BAUD) -Os 
+# CFLAGS += -I. $(EXTRA_SOURCE_DIR)
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums 
 CFLAGS += -Wall 
 CFLAGS += -g -ggdb
@@ -116,6 +117,7 @@ FL2.hex: FL2.elf
 FL2.elf: $(OBJ) | $(OBJECTS) 
 	@echo
 	@echo "FL2.elf: building FL2.elf:" 
+	$(CC) $(CFLAGS) $(OBJ) $(OBJECTS) -o $@ 
 
 $(OBJ): $(SRC)
 	@echo
