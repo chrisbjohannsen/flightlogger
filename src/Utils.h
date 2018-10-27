@@ -4,7 +4,7 @@
  *  Created on: Feb 17, 2013
  *      Author: cujo
  */
-#include <WString.h>
+#include "../../ArduinoCore-avr/cores/arduino/WString.h"
 #ifndef UTILS_H_
 #define UTILS_H_
 

@@ -65,3 +65,11 @@ Builds/
 makefile.local
 *.o
 objs/*
+
+
+#intellij
+.idea/
+
+# cmake
+cmake*/
+build/

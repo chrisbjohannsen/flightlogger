@@ -4,7 +4,7 @@
  *  Created on: Feb 17, 2013
  *      Author: cujo
  */
-#include <LCD.h>
+#include "LCD.h"
 
 LCD::LCD() {
 	lcd = new LiquidCrystal(12, 11, 5, 4, 3, 2);
