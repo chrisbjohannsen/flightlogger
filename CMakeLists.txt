@@ -21,10 +21,13 @@ set(SERIAL_DEV  /dev/cu.SLAB_USBtoUART)
 
 # only needed if we do floating point math and want to print floats with printf
 #set(EXTRA_LIBS "-lm -lprintf_flt")
+
+# build arduino libs
 setup_arduino_core()
 
 # adding static libs (a directory that contains subdirs with libs)
 add_libraries(lib)
+
 # adding the normal avr targets (a directory contains subdirs with targets)
 add_sources(src)
 
