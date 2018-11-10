@@ -19,7 +19,6 @@ Icon
 ##Java Stuff
 *.class
 
-
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -31,28 +30,7 @@ Icon
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-##grails stuff
-# web application files
-/web-app/WEB-INF/classes
-**/target
-
-# older plugin install locations
-/plugins
-/web-app/plugins
-
-# xcode
-**/*.xcodeproj/
-*.xcscheme
-*.xcuserstate
-.cproject
-.project
-.settings/
-Release/
-FlightLogger/
-Builds/
-*.bak
-
-#gcc stuff
+# gcc stuff
 *.gch
 *.elf
 *.hex
@@ -67,7 +45,7 @@ makefile.local
 objs/*
 
 
-#intellij
+# intellij
 .idea/
 
 # cmake
